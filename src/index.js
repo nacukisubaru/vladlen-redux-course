@@ -1,5 +1,5 @@
 import './styles.css'
-
+console.log('test')
 const counter = document.getElementById('counter')
 const addBtn = document.getElementById('add')
 const subBtn = document.getElementById('sub')
