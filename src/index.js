@@ -1,36 +1,43 @@
 import './styles.css'
-console.log('test')
+import {createStore} from './createStore'
+import {rootReducer} from './redux/rootReducer'
+
 const counter = document.getElementById('counter')
 const addBtn = document.getElementById('add')
 const subBtn = document.getElementById('sub')
 const asyncBtn = document.getElementById('async')
 const themeBtn = document.getElementById('theme')
 
-let state = 0
+//инициализируем store с начальным state = 0
+const store = createStore(rootReducer, 0)
 
-function render () {
-    counter.textContent = state.toString()
-}
+window.store = store
 
 addBtn.addEventListener('click', () => {
-    state++
-    render()
+    //при каждом dispatch будет вызываться callback который добавили
+    //в subscribe
+    store.dispatch({type: 'INCREMENT'})
 })
 
 subBtn.addEventListener('click', () => {
-    state--
-    render()
+    store.dispatch({type: 'DECREMENT'})
 })
 
 asyncBtn.addEventListener('click', () => {
-    setTimeout(() => {
-        state++
-        render()
-    }, 2000)
+  
 })
+
+//в subscribe можем задать любую логику которая будет отрабатывать 
+//вместе с текущим state например выводить в html
+store.subscribe(() => {
+    const state = store.getState()
+    counter.textContent = state
+})
+
+//применяем callback чтобы в счетчике вывело 0 на старте приложения
+store.dispatch({type: 'INIT_APPLICATION'})
+
 
 themeBtn.addEventListener('click', () => {
     document.body.classList.toggle('dark')
 })
-
-render()
