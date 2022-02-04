@@ -1,10 +1,11 @@
 import './styles.css'
 //import {createStore} from './createStore'
-import {applyMiddleware, createStore} from 'redux'
+import {applyMiddleware, compose, createStore} from 'redux'
 import {logger} from 'redux-logger'
 import {rootReducer} from './redux/rootReducer'
 import {increment, decrement, asyncIncrement, changeTheme, disableButtons} from './redux/actions'
 import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 
 const counter = document.getElementById('counter')
@@ -27,10 +28,28 @@ const themeBtn = document.getElementById('theme')
 // }
 
 //инициализируем store с начальным state = 0
+
+
 const store = createStore(
-    rootReducer, 
-    applyMiddleware(thunk, logger)
+    rootReducer,
+    applyMiddleware(thunk, logger),
 )
+
+//расишрение в браузере для redux
+// const store = createStore(
+//     rootReducer,
+//     composeWithDevTools(
+//         applyMiddleware(thunk, logger),
+//         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+//     )
+// )
+
+// const store = createStore(
+//     rootReducer,
+//     composeWithDevTools(
+//         applyMiddleware(thunk, logger),
+//     )
+// )
 
 window.store = store
 
