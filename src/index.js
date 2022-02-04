@@ -1,8 +1,9 @@
 import './styles.css'
 //import {createStore} from './createStore'
-import {createStore} from 'redux'
+import {applyMiddleware, createStore} from 'redux'
 import {rootReducer} from './redux/rootReducer'
-import { increment, decrement } from './redux/actions'
+import { increment, decrement, asyncIncrement } from './redux/actions'
+import thunk from 'redux-thunk'
 
 
 const counter = document.getElementById('counter')
@@ -12,7 +13,11 @@ const asyncBtn = document.getElementById('async')
 const themeBtn = document.getElementById('theme')
 
 //инициализируем store с начальным state = 0
-const store = createStore(rootReducer, 0)
+const store = createStore(
+    rootReducer, 
+    0, 
+    applyMiddleware(thunk)
+)
 
 window.store = store
 
@@ -27,9 +32,7 @@ subBtn.addEventListener('click', () => {
 })
 
 asyncBtn.addEventListener('click', () => {
-  setTimeout(() => {
-    store.dispatch(increment())
-  }, 200)
+    store.dispatch(asyncIncrement())
 })
 
 //в subscribe можем задать любую логику которая будет отрабатывать 
