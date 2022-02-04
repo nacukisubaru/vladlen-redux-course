@@ -1,6 +1,9 @@
 import './styles.css'
-import {createStore} from './createStore'
+//import {createStore} from './createStore'
+import {createStore} from 'redux'
 import {rootReducer} from './redux/rootReducer'
+import { increment, decrement } from './redux/actions'
+
 
 const counter = document.getElementById('counter')
 const addBtn = document.getElementById('add')
@@ -16,15 +19,17 @@ window.store = store
 addBtn.addEventListener('click', () => {
     //при каждом dispatch будет вызываться callback который добавили
     //в subscribe
-    store.dispatch({type: 'INCREMENT'})
+    store.dispatch(increment())
 })
 
 subBtn.addEventListener('click', () => {
-    store.dispatch({type: 'DECREMENT'})
+    store.dispatch(decrement())
 })
 
 asyncBtn.addEventListener('click', () => {
-  
+  setTimeout(() => {
+    store.dispatch(increment())
+  }, 200)
 })
 
 //в subscribe можем задать любую логику которая будет отрабатывать 
